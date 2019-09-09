@@ -21,39 +21,39 @@ public class Fraction {
     public Fraction(String fraction){
         int i = fraction.indexOf("/");
         this.numerator = Integer.parseInt(fraction.substring(0,i));
-        this.denominator = Integer.parseInt(fraction.substring(i+1);
+        this.denominator = Integer.parseInt(fraction.substring(i+1));
     }
 
     // adds fraction f to this fraction - returns the resulting fraction
     public Fraction add(Fraction f){
-        this.numerator = this.numerator + f.numerator * this.denominator;
-        this.denominator = this.denominator * f.denominator;
-        int gcd = gcd(this.numerator, this.denominator);
-        return new Fraction(this.numerator / gcd, this.denominator / gcd);
+        int tempNum = this.numerator + f.numerator * this.denominator;
+        int tempDenom = this.denominator * f.denominator;
+        int gcd = gcd(tempNum, tempDenom);
+        return new Fraction(tempNum / gcd, tempDenom / gcd);
     }
 
     // subtracts fraction f from this fraction - returns the resulting fraction
     public Fraction subtract(Fraction f){
-        this.numerator = this.numerator - f.numerator * this.denominator;
-        this.denominator = this.denominator * f.denominator;
-        int gcd = gcd(this.numerator, this.denominator);
-        return new Fraction(this.numerator / gcd, this.denominator / gcd);
+        int tempNum = this.numerator - f.numerator * this.denominator;
+        int tempDenom  = this.denominator * f.denominator;
+        int gcd = gcd(tempNum, tempDenom);
+        return new Fraction(tempNum / gcd, tempDenom / gcd);
     }
 
     // multiplies fraction f by this fraction -  returns the resulting fraction
     public Fraction multiply(Fraction f){
-        this.numerator = this.numerator * f.numerator;
-        this.denominator = this.denominator * f.denominator;
-        int gcd = gcd(this.numerator, this.denominator);
-        return new Fraction(this.numerator / gcd, this.denominator / gcd);
+        int tempNum= this.numerator * f.numerator;
+        int tempDenom = this.denominator * f.denominator;
+        int gcd = gcd(tempNum, tempDenom);
+        return new Fraction(tempNum / gcd, tempDenom / gcd);
     }
 
     // divides fraction f to this fraction - returns the resulting fraction
     public Fraction divide(Fraction f){
-        this.numerator = this.numerator * f.denominator;
-        this.denominator = this.denominator * f.numerator;
-        int gcd = gcd(this.numerator, this.denominator);
-        return new Fraction(this.numerator / gcd, this.denominator / gcd);
+        int tempNum = this.numerator * f.denominator;
+        int tempDenom  = this.denominator * f.numerator;
+        int gcd = gcd(tempNum, tempDenom);
+        return new Fraction(tempNum / gcd, tempDenom / gcd);
     }
 
     public int gcd(int x, int y){
@@ -88,6 +88,10 @@ public class Fraction {
     // returns a string representation of the fraction
     public String toString(){
         return this.numerator + "/" + this.denominator;
+    }
+
+    public double sqrt(){
+        return Math.sqrt(this.numerator) / Math.sqrt(this.denominator);
     }
 
     // do unit testing of this class
