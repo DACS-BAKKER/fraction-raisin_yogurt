@@ -1,74 +1,72 @@
+/*
+Name: Elven Shum, Alex Yuk
+Project: Complex number class
+ */
+
 public class ComplexNumber {
     private Fraction a;
     private Fraction b;
 
-    public ComplexNumber (int a, int b){
-        this.a = new Fraction (a);
-        this.b = new Fraction (b);
+    public ComplexNumber(int a, int b) {
+        this.a = new Fraction(a);
+        this.b = new Fraction(b);
     }
 
-    public ComplexNumber (Fraction a, Fraction b){
+    public ComplexNumber(Fraction a, Fraction b) {
         this.a = a;
         this.b = b;
     }
 
-    public ComplexNumber (int number){
-        this.a = new Fraction (number);
-        this.b = new Fraction (0);
+    public ComplexNumber(int number) {
+        this.a = new Fraction(number);
+        this.b = new Fraction(0);
     }
 
-    //assume a+bi
-    public ComplexNumber (String complexNum){
-        int i = complexNum.indexOf("+");
-        this.a = new Fraction(Integer.parseInt(complexNum.substring(0,i)));
-        this.b = new Fraction(Integer.parseInt(complexNum.substring(i + 1), complexNum.length()-1));
+    // entering a+bi no space
+    public ComplexNumber(String complexNum) {
+        int i = complexNum.indexOf('+');
+        if (i == -1) {
+            this.a = new Fraction(complexNum);
+            this.b = new Fraction(0);
+        }
+        else {
+            this.a = new Fraction(complexNum.substring(0, i));
+            this.b = new Fraction(complexNum.substring(i + 1, complexNum.length() - 1));
+        }
     }
 
-    public ComplexNumber add(ComplexNumber cn){
-        Fraction real = this.a.add(cn.a);
-        Fraction imag = this.b.add(cn.b);
-        return new ComplexNumber(real, imag);
+    public ComplexNumber add(ComplexNumber cn) {
+        Fraction a = this.a.add(cn.a);
+        Fraction b = this.b.add(cn.b);
+        return new ComplexNumber(a, b);
     }
 
-    public ComplexNumber subtract(ComplexNumber cn){
-        Fraction real = this.a.subtract(cn.a);
-        Fraction imag = this.b.subtract(cn.b);
-        return new ComplexNumber(real, imag);
+    public ComplexNumber subtract(ComplexNumber cn) {
+        Fraction a = this.a.subtract(cn.a);
+        Fraction b = this.b.subtract(cn.b);
+        return new ComplexNumber(a, b);
     }
 
-    public ComplexNumber multiply(ComplexNumber cn){
-        //real = a1 * a2 - b1 * b2
-        Fraction real = this.a.multiply(cn.a).subtract(this.b.multiply(cn.b));
-        //img = a1 * b2 - b1 * a2
-        Fraction imag = this.a.multiply(cn.b).subtract(this.b.multiply(cn.a));
-        return new ComplexNumber(real, imag);
+    public ComplexNumber multiply(ComplexNumber cn) {
+        Fraction a = this.a.multiply(cn.a).subtract(this.b.multiply(cn.b));
+        Fraction b = this.a.multiply(cn.b).add(this.a.multiply(cn.b));
+        return new ComplexNumber(a, b);
     }
 
-    public ComplexNumber divide(ComplexNumber cn){
-        //real = (a1*a2+b1*b2)/(a2^2 + b2^2)
-        Fraction real = this.a.multiply(cn.a).add(this.b.multiply(cn.b)).divide(cn.a.multiply(cn.a).add(cn.b.multiply(cn.b)));
-        //imaginary (b1*a2-a1*b2)/(a2^2 + b2^2)
-        Fraction imag = this.b.multiply(cn.a).subtract(this.a.multiply(cn.b)).divide(cn.a.multiply(cn.a).add(cn.b.multiply(cn.b)));
-        return new ComplexNumber(real, imag);
+    public ComplexNumber divide(ComplexNumber cn) {
+        Fraction a = (this.a.multiply(cn.a).add(this.b.multiply(cn.b))).divide((cn.a.multiply((cn.a))).add((cn.b.multiply(cn.b))));
+        Fraction b = (this.b.multiply(cn.a).subtract(this.a.multiply(cn.b))).divide((cn.a.multiply((cn.a))).add((cn.b.multiply(cn.b))));
+        return new ComplexNumber(a, b);
     }
 
     public String toString(){
+        if (this.b.toDecimal() == 0)
+            return this.a.toString();
         return this.a.toString() + "+" + this.b.toString() + "i";
     }
 
-    public double abs(){
-        return (this.a.multiply(this.a).add(this.b.multiply(this.b))).sqrt();
-    }
-
-    public int compareTo(ComplexNumber cn){
-        if (cn.abs() > this.abs()){
-            return -1;
-        }
-        else if (cn.abs() == this.abs()){
-            return 0;
-        }
-        else {
-            return 1;
-        }
+    public static void main(String[]args) {
+        ComplexNumber a = new ComplexNumber(new Fraction(3, 1), new Fraction(2, 1));
+        System.out.println(a.divide(new ComplexNumber(new Fraction(4, 1), new Fraction(-3, 1))));
     }
 }
