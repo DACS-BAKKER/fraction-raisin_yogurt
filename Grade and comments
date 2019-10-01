@@ -1,0 +1,23 @@
+Elven and Alex
+
+Code:
+
+Looks good.  You undetstand classes well.
+You do not need to use this so much, only use it if there is an ambiguity to resolve.
+Some of your variable names are weak, like j and tl...
+You do not seem to have a fraction variable, just a complex number...in faact you never use a fraction in your calculator. I do not understand that.
+I think that was at the heart of the assignment, to make a fraction class and then use it in another class.
+
+GUI:
+
+Could you give some instructions, hard too use.
+When I enter 1/2+3/4 I get 25/24 and that seems a bit off.  I am not even sure how you get that!
+If I enter 1/2= +3/4= I get 13/24
+1/2= +1/4 = leads to 5/8 . am I doing something wrong?
+The complex part works, but it is hard to know what part of the number I am entering.  Can you prompt the user?
+You communication with the user is minimal, you really just ask them to figure it out.
+
+Grade:  check
+Reasonable understanding of classes, but the GUI while perhaps functional leads to results that are uniterpretable to me.
+
+
