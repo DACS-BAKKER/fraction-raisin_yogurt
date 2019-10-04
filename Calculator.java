@@ -39,12 +39,11 @@ public class Calculator {
     // Variables used to do calculations involving order of operations
     private ComplexNumber previous_number = new ComplexNumber(0);
     private ComplexNumber running_total = new ComplexNumber(0);
-    private Operation current_operation = Operation.none; 
+    private Operation current_operation = Operation.none;
     private Operation previous_operation = Operation.none;
 
     // If user is entering a complex number
     private boolean in_complex;
-
     private boolean can_clear = true;
 
     enum Operation {
@@ -160,23 +159,27 @@ public class Calculator {
                  */
                 switch (((JButton) e.getSource()).getText()) {
                     case "+":
+                        if (in_complex) in_complex = !in_complex;
                         can_clear = true;
                         checkPriority(Operation.add);
                         previous_operation = Operation.add;
                         current_operation = Operation.add;
                         break;
                     case "-":
+                        if (in_complex) in_complex = !in_complex;
                         can_clear = true;
                         checkPriority(Operation.subtract);
                         previous_operation = Operation.subtract;
                         current_operation = Operation.subtract;
                         break;
                     case "×":
+                        if (in_complex) in_complex = !in_complex;
                         can_clear = true;
                         checkPriority(Operation.multiply);
                         current_operation = Operation.multiply;
                         break;
                     case "÷":
+                        if (in_complex) in_complex = !in_complex;
                         can_clear = true;
                         checkPriority(Operation.divide);
                         current_operation = Operation.divide;
@@ -238,10 +241,12 @@ public class Calculator {
                             // Doesn't enter if it is in complex mode
                         } else if (tl.getText().indexOf('+') != -1 && in_complex) {
                             int i = tl.getText().indexOf('+');
-                            tl.setText(tl.getText().substring(0, i + 1) + ((JButton) e.getSource()).getText() + "i");
-                            in_complex = !in_complex;
+                            if (tl.getText().substring(i + 1).equals("0i"))
+                                tl.setText(tl.getText().substring(0, i + 1) + ((JButton) e.getSource()).getText() + "i");
+                            else
+                                tl.setText(tl.getText().substring(0, tl.getText().length() - 1) + ((JButton) e.getSource()).getText() + "i");
                             // Doesn't enter if you enter 0 after a 0
-                        } else if (Integer.parseInt(tl.getText()) != 0)
+                        } else if (!tl.getText().equals("0"))
                             tl.setText(tl.getText() + ((JButton) e.getSource()).getText());
                         else
                             tl.setText(((JButton) e.getSource()).getText());
@@ -250,11 +255,16 @@ public class Calculator {
             } catch (Exception ee) {
                 ee.printStackTrace();
             }
+
+//            System.out.println("Total: " + running_total);
+//            System.out.println("PreviousN: " + previous_number);
+//            System.out.println("CurrentO: " + current_operation);
+//            System.out.println("PreviousO: " + previous_operation);
         }
 
         // Check priority of the calculation and simplifies it
         private void checkPriority(Operation o) {
-            if ((o == Operation.add || o == Operation.divide)) {
+            if ((o == Operation.add || o == Operation.subtract)) {
                 if (current_operation == Operation.none) {
                     previous_number = new ComplexNumber(tl.getText());
                     running_total = previous_number;
@@ -262,10 +272,14 @@ public class Calculator {
                 if ((previous_operation != Operation.none) && (current_operation == Operation.multiply || current_operation == Operation.divide)) {
                     previous_number = doCalculation(previous_number, new ComplexNumber(tl.getText()), current_operation);
                     previous_number = doCalculation(running_total, previous_number, previous_operation);
-                } else if (previous_operation != Operation.none)
+                } else if (previous_operation != Operation.none) {
                     previous_number = doCalculation(previous_number, new ComplexNumber(tl.getText()), o);
-                else
+                    running_total = previous_number;
+                }
+                else {
                     previous_number = doCalculation(previous_number, new ComplexNumber(tl.getText()), current_operation);
+                    running_total = previous_number;
+                }
             } else {
                 if (current_operation == Operation.multiply || current_operation == Operation.divide)
                     previous_number = doCalculation(previous_number, new ComplexNumber(tl.getText()), current_operation);
